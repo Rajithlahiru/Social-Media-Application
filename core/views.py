@@ -7,12 +7,15 @@ from django.shortcuts import redirect, render
 from django.http import HttpRequest
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .models import Profile
 
 from core.models import Profile
 
 # Create your views here.
 
+
+@login_required(login_url='signin')
 def index(request):
     return render(request,"index.html")
 
@@ -64,3 +67,8 @@ def signin(request):
 
     else:
         return render(request, 'signin.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('signin')
